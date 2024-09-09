@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  mariadb:
+    build: ./mariadb
+    container_name: mariadb
+    networks:
+      - inception
+    env_file: .env
+    ports:
+      - "3306:3306"
+    volumes:
+      - mariadb_volume:/var/lib/mysql
+    restart: always
+
+  wordpress:
+    build: ./wordpress
+    container_name: wordpress
+    networks:
+      - inception
+    env_file: .env
+    ports:
+      - "8080:80"
+    volumes:
+      - wordpress_volume:/var/www/html
+    restart: always
+    depends_on:
+      - mariadb
+
+networks:
+  inception:
+
+
+volumes:
+  mariadb_volume:
+  wordpress_volume:
